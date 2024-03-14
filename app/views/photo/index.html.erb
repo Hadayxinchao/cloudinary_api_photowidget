@@ -1,0 +1,31 @@
+<h1 style="text-align: center">Realtime PhotoFeeds!</h1>
+<div class="wrapper">
+  <%= form_with url: "photo/store", method: :post, multipart: true do |form| %>
+    <%= token_tag %>
+    <div class="form-group">
+      <%= form.label :caption, "Caption" %>
+      <%= form.text_field :caption %>
+    </div>
+
+    <div style="margin-left: 5px;">
+      <%= form.file_field :image %>
+    </div>
+
+    <div>
+      <%= form.submit "Upload" %>
+    </div>
+  <% end %>
+  <% if @posts %>
+    <% @posts.each do |post| %>
+      <div class="post">
+        <div>
+          <img src="<%= Cloudinary::Utils.cloudinary_url(post.asset, :transformation=> 
+          {:crop=>"fill", :width=>300, :height=>300 }) %>" class="post-image">
+        </div>
+        <p class="post-caption"><%= post.caption %></p>
+      </div>
+    <% end %>
+  <% else %>
+    No Image to display
+  <% end %>
+</div>
